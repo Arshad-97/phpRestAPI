@@ -113,7 +113,7 @@ class Post{
         $this->body =htmlspecialchars(strip_tags($this->body));
         $this->author =htmlspecialchars(strip_tags($this->author));
         $this->category_id =htmlspecialchars(strip_tags($this->category_id));
-        //$this->id =htmlspecialchars(strip_tags($this->id));
+        $this->id =htmlspecialchars(strip_tags($this->id));
         
         //binding of parameters
         $stmt->bindParam(':title',$this->title);
@@ -129,6 +129,29 @@ class Post{
         printf("Error %s. \n",$stmt->error);
         return false;
     }
+
+    public function delete(){
+        // delete vquery
+        $query ='DELETE FROM '.$this->table.' WHERE id=:id';
+        
+        //prepare statement
+        $stmt = $this->conn->prepare($query);
+        
+        //clean data
+        $this->id =htmlspecialchars(strip_tags($this->id));
+        
+        //binding of parameters
+        $stmt->bindParam(':id',$this->id);
+        //execute the query
+        if($stmt->execute()){
+            return true;
+        }
+
+        printf("Error %s. \n",$stmt->error);
+        return false;
+    }
+
+    
     
 }
 // $post =new Post();
